@@ -8,7 +8,7 @@ const colors = {
 
 const log = global.console.log
 
-function write(level: string, content: string): void {
+function write(level: string, ...args: any[]): void {
   try {
     throw new Error('empty')
   } catch (e) {
@@ -19,7 +19,7 @@ function write(level: string, content: string): void {
       .filter((line: string) => line.startsWith('at '))
     const current = stack[2].match(/\(.+\)/)[0]
     const color = colors[level] || colors.log
-    log(`${color(`[${level}: ${_now()}]`)} ${content} ${current}`)
+    log(color(`[${level}: ${_now()}]`), ...args, current)
   }
 }
 
@@ -53,13 +53,13 @@ const console: Console = {
   config({ debug }: { debug: boolean }) {
     if (debug) {
       global.console.log = function(...args: any[]) {
-        write('log', args.join(' '))
+        write('log', ...args)
       }
       global.console.warn = function(...args: any[]) {
-        write('warn', args.join(' '))
+        write('warn', ...args)
       }
       global.console.error = function(...args: any[]) {
-        write('error', args.join(' '))
+        write('error', ...args)
       }
     } else {
       global.console.log = _nonf
