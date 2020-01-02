@@ -17,7 +17,7 @@ function write(level: string, ...args: any[]): void {
       .split(/\n/)
       .map((line: string) => line.trim())
       .filter((line: string) => line.startsWith('at '))
-    const current = stack[2].match(/\(.+\)/)[0]
+    const current = stack[2].match(/at\s(.*\()?(.*:\d+:\d+)(\))?$/)[2]
     const color = colors[level] || colors.log
     log(color(`[${level}: ${_now()}]`), ...args, current)
   }
