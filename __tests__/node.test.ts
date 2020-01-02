@@ -1,8 +1,10 @@
 const spy = jest.spyOn(global.console, 'log')
 
+import * as path from 'path'
 import console from '../src'
 
 const prefixReg = /[log: \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}]/
+const localFilePath = path.resolve(__dirname, 'node.test.ts')
 
 describe('console in node with debug', () => {
   afterEach(() => {
@@ -20,7 +22,7 @@ describe('console in node with debug', () => {
 
     expect(prefixReg.test(spy.mock.calls[0][0])).toBe(true)
     expect(spy.mock.calls[0][1]).toBe('t')
-    expect(spy.mock.calls[0][2]).toBe('C:\\github\\console\\__tests__\\node.test.ts:16:22')
+    expect(spy.mock.calls[0][2]).toBe(`${localFilePath}:18:22`)
   })
 
   test('should console in array function', () => {
@@ -35,7 +37,7 @@ describe('console in node with debug', () => {
 
     expect(prefixReg.test(spy.mock.calls[0][0])).toBe(true)
     expect(spy.mock.calls[0][1]).toBe('t')
-    expect(spy.mock.calls[0][2]).toBe('C:\\github\\console\\__tests__\\node.test.ts:31:22')
+    expect(spy.mock.calls[0][2]).toBe(`${localFilePath}:33:22`)
   })
 
   test('should console in function call by apply', () => {
@@ -52,6 +54,6 @@ describe('console in node with debug', () => {
 
     expect(prefixReg.test(spy.mock.calls[0][0])).toBe(true)
     expect(spy.mock.calls[0][1]).toBe('t')
-    expect(spy.mock.calls[0][2]).toBe('C:\\github\\console\\__tests__\\node.test.ts:47:37')
+    expect(spy.mock.calls[0][2]).toBe(`${localFilePath}:49:37`)
   })
 })
